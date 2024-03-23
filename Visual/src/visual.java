@@ -110,19 +110,26 @@ public class visual {
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_LEFT:
                         System.out.println("Flecha izquierda presionada");
+                        Negocio.elegirPosRandom();
                         Negocio.moverIzquierda();
                         actualizarTablero();
                         break;
                     case KeyEvent.VK_RIGHT:
+                    	Negocio.elegirPosRandom();
                     	Negocio.moverDerecha();
+
                         actualizarTablero();
                         break;
                     case KeyEvent.VK_UP:
+                    	Negocio.elegirPosRandom();
                     	Negocio.moverArriba();
+
                         actualizarTablero();
                         break;
                     case KeyEvent.VK_DOWN:
+                    	Negocio.elegirPosRandom();
                     	Negocio.moverAbajo();
+
                         actualizarTablero();
                         break;
                     default:
