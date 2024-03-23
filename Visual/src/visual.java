@@ -8,6 +8,8 @@ import javax.swing.JLabel;
 import java.awt.Color;
 import javax.swing.border.BevelBorder;
 import java.awt.Font;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 public class visual {
 
 	private JFrame frame;
@@ -53,21 +55,30 @@ public class visual {
 		for (int i = 0; i < 4; i++) {
 	        for (int j = 0; j < 4; j++) {	        
 	           tab2048[i][j] = new JPanel();
-	           definirPanel(tab2048[i][j]);	           
+	           definirPanel(tab2048[i][j]);	
+				lab2048[i][j] = new JLabel(""); 
 	           comprobarEstadoLabel(i, j);	           
 	           definirLabel(lab2048[i][j],tab2048[i][j]);	           
 	        }
 		}
 	}
+	private void actualizarTablero() {
+		for (int i = 0; i < 4; i++) {
+	        for (int j = 0; j < 4; j++) {	        
+	           comprobarEstadoLabel(i, j);	           
+	        }
+		}
+	}
 	private void comprobarEstadoLabel(int i, int j) { //HORRIBLE pero ya estoy quemado, hay que mejorar esta funcion jeje
 		if (Negocio.comprobarPosicion(i, j)) {
-				if (primerInicio <2 ) {
-					lab2048[i][j] = new JLabel("2");
+				if (primerInicio  < 2 ) {
+					lab2048[i][j].setText("2"); 
+					primerInicio+=1;
 				}else {
-					lab2048[i][j] = new JLabel(Negocio.generarRandom());
+					lab2048[i][j].setText(Negocio.generarRandom());
 				}	           
      } else {
-         lab2048[i][j] = new JLabel();
+         lab2048[i][j].setText("");
      }
 	}
 	private void definirPanel(JPanel panel) {
@@ -92,7 +103,43 @@ public class visual {
 		iniciarTablero();
 		cargarTablero();
 		
-		
+		frame.addKeyListener(new KeyListener() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                // Manejar la tecla presionada
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_LEFT:
+                        System.out.println("Flecha izquierda presionada");
+                        Negocio.moverIzquierda();
+                        actualizarTablero();
+                        break;
+                    case KeyEvent.VK_RIGHT:
+                    	Negocio.moverDerecha();
+                        actualizarTablero();
+                        break;
+                    case KeyEvent.VK_UP:
+                    	Negocio.moverArriba();
+                        actualizarTablero();
+                        break;
+                    case KeyEvent.VK_DOWN:
+                    	Negocio.moverAbajo();
+                        actualizarTablero();
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                // No necesitamos implementar este método, pero debe estar presente debido a KeyListener
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                // No necesitamos implementar este método, pero debe estar presente debido a KeyListener
+            }
+        });
 		
 		
 	}

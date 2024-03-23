@@ -14,11 +14,14 @@ public class Negocio {
 		
 	}
 	public static void setearPosiciones() {
+		System.out.println("Entre a setear posiciones");
 		for (int i = 0; i < tablero.length; i++) {
 	        for (int j = 0; j < tablero.length; j++) {
+
 	            if (tablero[i][j] != true) {
 	            	tablero[i][j] = false;
 	            }
+
 	        }
 	    }
 
@@ -41,15 +44,64 @@ public class Negocio {
 	public static boolean comprobarPosicion(int x, int y) {
 		return tablero[x][y];
 	}
+	
+	public static void moverIzquierda() {
+	    for (int i = 0; i < tablero.length; i++) {
+	        for (int j = 1; j < tablero.length; j++) {
+	            if (tablero[i][j]) {
+	                // Verificar si la posición hacia la izquierda está vacía
+	                if (!tablero[i][j - 1]) {
+	                    // Mover la ficha hacia la izquierda
+	                    tablero[i][j - 1] = true;
+	                    tablero[i][j] = false;
+	                }
+	            }
+	        }
+	    }
+	}
+	public static void moverDerecha() {
+	    for (int i = 0; i < tablero.length; i++) {
+	        for (int j = tablero.length - 2; j >= 0; j--) {
+	            if (tablero[i][j]) {
+	                    tablero[i][j + 1] = true;
+	                    tablero[i][j] = false;
+	                }
+	            }
+	        }
+	    }
+	
+	public static void moverArriba() {
+	    for (int j = 0; j < tablero.length; j++) {
+	        for (int i = 1; i < tablero.length; i++) {
+	            if (tablero[i][j]) {
+	                // Verificar si la posición hacia arriba está vacía
+	                    // Mover la ficha hacia arriba
+	                    tablero[i - 1][j] = true;
+	                    tablero[i][j] = false;
+	                
+	            }
+	        }
+	    }
+	}
+	public static void moverAbajo() {
+	    for (int i = tablero.length - 2; i >= 0; i--) {
+	        for (int j = 0; j < tablero.length; j++) {
+	            if (tablero[i][j]) {             
+	                    tablero[i + 1][j] = true;
+	                    tablero[i][j] = false;	                
+	            }
+	        }
+	    }
+	}
+	
+	
+	
+	
 	public  static String generarRandom() {
-		numRandon =(int) (Math.random() * 10);
+		numRandon =(int) (Math.random() * 100);
 		return numRandon % 2 == 0 ? "2" : "4";
 					
 	}
-	public static void main(String[] args) {
-		inciarTablero();
-		setearPosiciones();
-		System.out.println(tablero[3][2]);
-	}
+
 	
 }
