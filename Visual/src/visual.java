@@ -8,7 +8,6 @@ import javax.swing.JLabel;
 import java.awt.Color;
 import javax.swing.border.BevelBorder;
 import java.awt.Font;
-
 public class visual {
 
 	private JFrame frame;
@@ -221,5 +220,6 @@ public class visual {
 		lblNewLabel_15.setFont(new Font("Tahoma", Font.PLAIN, 35));
 		lblNewLabel_15.setBounds(30, 25, 80, 43);
 		panel_15.add(lblNewLabel_15);
+		
 	}
 }
