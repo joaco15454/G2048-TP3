@@ -1,7 +1,7 @@
 package negocio;
 public class Negocio {
 	private static boolean[][] tablero;
-	private int numRandon;
+	private static int numRandon;
 
 	public static void inciarTablero() {
 		tablero = new boolean[4][4]; 
@@ -10,6 +10,7 @@ public class Negocio {
 			elegirPosRandom();
 			agregados+=1;
 		}
+		setearPosiciones();
 		
 	}
 	public static void setearPosiciones() {
@@ -37,10 +38,18 @@ public class Negocio {
 		}
 		
 	}
-	
+	public static boolean comprobarPosicion(int x, int y) {
+		return tablero[x][y];
+	}
+	public  static String generarRandom() {
+		numRandon =(int) (Math.random() * 10);
+		return numRandon % 2 == 0 ? "2" : "4";
+					
+	}
 	public static void main(String[] args) {
 		inciarTablero();
 		setearPosiciones();
 		System.out.println(tablero[3][2]);
 	}
+	
 }
