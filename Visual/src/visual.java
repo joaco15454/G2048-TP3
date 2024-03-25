@@ -108,22 +108,29 @@ public class visual {
 		panel.add(label);
 	}
 	private void movimientoIzquierda() {
-	    for (int i = 0; i < tab2048.length; i++) {
-	        for (int j = 1; j < tab2048[i].length; j++) { // Ajustar la condición aquí
+		 for (int i = 0; i < tab2048.length; i++) {
+		     for (int j = 1; j < tab2048[i].length; j++) { // // Ajustar la condición aquí
 	            if (tab2048[i][j] != null && lab2048[i][j - 1].getText() == "") {
-	            	System.out.println("Posicion: " + i + " " + j );
 	                lab2048[i][j - 1].setText(lab2048[i][j].getText());
 	                lab2048[i][j].setText("");
+	            } else if(tab2048[i][j] != null && Negocio.sonIguales(lab2048[i][j - 1].getText(), lab2048[i][j].getText())) {
+	            	lab2048[i][j - 1].setText(Negocio.sumaTablero(lab2048[i][j].getText()));
+	            	lab2048[i][j].setText("");
+	            	Negocio.actualizarPosicion(i,j);
 	            }
 	        }
 	    }
-	}
+	} 
 	private void movimientoDerecha() {
 	    for (int i = 0; i < tab2048.length; i++) {
 	        for (int j = tab2048[i].length - 2; j >= 0; j--) { // Ajustar la condición aquí
 	            if (tab2048[i][j] != null && lab2048[i][j + 1].getText() == "") {
 	                lab2048[i][j + 1].setText(lab2048[i][j].getText());
 	                lab2048[i][j].setText("");
+	            } else if(tab2048[i][j] != null && Negocio.sonIguales(lab2048[i][j + 1].getText(), lab2048[i][j].getText())) {
+	            	lab2048[i][j + 1].setText(Negocio.sumaTablero(lab2048[i][j].getText()));
+	                lab2048[i][j].setText("");
+	                Negocio.actualizarPosicion(i,j);
 	            }
 	        }
 	    }
@@ -134,6 +141,10 @@ public class visual {
 	            if (tab2048[i][j] != null && lab2048[i - 1][j].getText() == "") {
 	                lab2048[i - 1][j].setText(lab2048[i][j].getText());
 	                lab2048[i][j].setText("");
+	            }else if(tab2048[i][j] != null && Negocio.sonIguales(lab2048[i- 1][j].getText(), lab2048[i][j].getText())) {
+	            	lab2048[i - 1][j].setText(Negocio.sumaTablero(lab2048[i][j].getText()));
+	                lab2048[i][j].setText("");
+	                Negocio.actualizarPosicion(i,j);
 	            }
 	        }
 	    }
@@ -144,6 +155,10 @@ public class visual {
 	            if (tab2048[i][j] != null && lab2048[i + 1][j].getText() == "") {
 	                lab2048[i + 1][j].setText(lab2048[i][j].getText());
 	                lab2048[i][j].setText("");
+	            } else if(tab2048[i][j] != null && Negocio.sonIguales(lab2048[i+ 1][j].getText(), lab2048[i][j].getText())) {
+	            	lab2048[i + 1][j].setText(Negocio.sumaTablero(lab2048[i][j].getText()));
+	                lab2048[i][j].setText("");
+	                Negocio.actualizarPosicion(i,j);
 	            }
 	        }
 	    }

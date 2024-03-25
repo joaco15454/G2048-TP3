@@ -120,7 +120,17 @@ public class Negocio {
 	    }
 	    
 	}
-	
+	public static void actualizarPosicion(int i, int j) {
+		tablero[i][j] = false;
+	}
+	public static String sumaTablero(String i) {
+		int numeroInt = Integer.parseInt(i);
+		System.out.println(numeroInt);
+		return "" + numeroInt * 2;
+	}
+	public static boolean sonIguales(String i, String j) {
+		return i.trim().equals(j.trim());
+	}
 	public static boolean esNuevo(int i, int j) {
 		return !posicionesAsignadas.contains(new Point(i,j));
 	}
