@@ -1,7 +1,14 @@
 package negocio;
+
+import java.awt.Point;
+import java.util.HashSet;
+import java.util.Set;
+
 public class Negocio {
+	
 	private static boolean[][] tablero;
 	private static int numRandon;
+	private static Set<Point> posicionesAsignadas = new HashSet<>(); //POR AHORA BORRABLE, lo dejo por las dudas
 
 	public static void inciarTablero() {
 		tablero = new boolean[4][4]; 
@@ -32,9 +39,8 @@ public class Negocio {
 		while (!posLibre) {
 			int numero1 = (int) (Math.random() * 4);
 			int numero2 = (int) (Math.random() * 4);
-			System.out.println("Estoy aqui");
 
-			if (tablero[numero1][numero2] != true) {
+			if (!tablero[numero1][numero2]) {
 				tablero[numero1][numero2] = true;
 				posLibre=true;
 			}
@@ -54,6 +60,9 @@ public class Negocio {
 	                    // Mover la ficha hacia la izquierda
 	                    tablero[i][j - 1] = true;
 	                    tablero[i][j] = false;
+	                    posicionesAsignadas.add(new Point(i, j-1));
+	                    posicionesAsignadas.remove(new Point(i,j));
+
 	                }
 	            }
 	        }
@@ -63,8 +72,14 @@ public class Negocio {
 	    for (int i = 0; i < tablero.length; i++) {
 	        for (int j = tablero.length - 2; j >= 0; j--) {
 	            if (tablero[i][j]) {
-	                    tablero[i][j + 1] = true;
+	            	if (!tablero[i][j + 1]) {
+	            		tablero[i][j + 1] = true;
 	                    tablero[i][j] = false;
+	                    posicionesAsignadas.add(new Point(i, j+1));
+	                    posicionesAsignadas.remove(new Point(i,j));
+
+	            	}
+	                    
 	                }
 	            }
 	        }
@@ -75,10 +90,16 @@ public class Negocio {
 	        for (int i = 1; i < tablero.length; i++) {
 	            if (tablero[i][j]) {
 	                // Verificar si la posición hacia arriba está vacía
-	                    // Mover la ficha hacia arriba
+	            	if (!tablero[i - 1][j]) {
+	            		// Mover la ficha hacia arriba
 	                    tablero[i - 1][j] = true;
 	                    tablero[i][j] = false;
+	                    posicionesAsignadas.add(new Point(i-1, j));
+	                    posicionesAsignadas.remove(new Point(i,j));
+
 	                
+	            	}
+	                    
 	            }
 	        }
 	    }
@@ -86,15 +107,23 @@ public class Negocio {
 	public static void moverAbajo() {
 	    for (int i = tablero.length - 2; i >= 0; i--) {
 	        for (int j = 0; j < tablero.length; j++) {
-	            if (tablero[i][j]) {             
-	                    tablero[i + 1][j] = true;
-	                    tablero[i][j] = false;	                
+	            if (tablero[i][j]) {  
+	            	if (!tablero[i + 1][j]) {
+	            		tablero[i + 1][j] = true;
+	                    tablero[i][j] = false;	
+	                    posicionesAsignadas.add(new Point(i+1, j));
+	                    posicionesAsignadas.remove(new Point(i,j));
+	            	}
+	                                    
 	            }
 	        }
 	    }
+	    
 	}
 	
-	
+	public static boolean esNuevo(int i, int j) {
+		return !posicionesAsignadas.contains(new Point(i,j));
+	}
 	
 	
 	public  static String generarRandom() {

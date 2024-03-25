@@ -4,18 +4,23 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Point;
+
 import javax.swing.JLabel;
 import java.awt.Color;
 import javax.swing.border.BevelBorder;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashSet;
+import java.util.Set;
 public class visual {
 
 	private JFrame frame;
 	private static JPanel[][] tab2048 = new JPanel[4][4];
 	private static JLabel[][] lab2048 = new JLabel[4][4];
-	private static int primerInicio = 0;
+	private static int primerInicio = 0; //variable para los primeros dos
+
 
 	/**
 	 * Launch the application.
@@ -64,22 +69,30 @@ public class visual {
 	}
 	private void actualizarTablero() {
 		for (int i = 0; i < 4; i++) {
-	        for (int j = 0; j < 4; j++) {	        
-	           comprobarEstadoLabel(i, j);	           
+	        for (int j = 0; j < 4; j++) {	
+	        	//System.out.println("La posicion: [" + i + ", " + j + "]");
+	      
+	        	//System.out.println(("Es una posicion nueva? : " + Negocio.esNuevo(i, j)));
+	        	//System.out.println("El tablero como lo esta tomando? : " + Negocio.comprobarPosicion(i, j));
+		        comprobarEstadoLabel(i, j);	           
+	        	
 	        }
 		}
 	}
-	private void comprobarEstadoLabel(int i, int j) { //HORRIBLE pero ya estoy quemado, hay que mejorar esta funcion jeje
-		if (Negocio.comprobarPosicion(i, j)) {
+	private void comprobarEstadoLabel(int i, int j) { //HORRIBLE pero ya estoy quemado, hay que mejorar esta funcion jej
+			//System.out.println(lab2048[i][j]);
+			if (Negocio.comprobarPosicion(i, j) && lab2048[i][j].getText() == "") {			
 				if (primerInicio  < 2 ) {
 					lab2048[i][j].setText("2"); 
 					primerInicio+=1;
 				}else {
 					lab2048[i][j].setText(Negocio.generarRandom());
-				}	           
-     } else {
-         lab2048[i][j].setText("");
-     }
+				}
+				
+			} else if (!Negocio.comprobarPosicion(i, j)) {
+				lab2048[i][j].setText("");   //EL PROBLEMA ES QUE ESTA TOMANDO LA NUEVA POSICION QUE ES VACIA EN EL MAYOR DE LOS CASOS, HAY QUE PASARLE EL VALOR DEL LABEL ANTERIUOR
+		
+			}		
 	}
 	private void definirPanel(JPanel panel) {
 			panel.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 0, 255), new Color(0, 0, 255), new Color(0, 0, 255), new Color(0, 0, 255)));
@@ -94,8 +107,47 @@ public class visual {
 		label.setBounds(40, 25, 80, 43);
 		panel.add(label);
 	}
-	
-	
+	private void movimientoIzquierda() {
+	    for (int i = 0; i < tab2048.length; i++) {
+	        for (int j = 1; j < tab2048[i].length; j++) { // Ajustar la condición aquí
+	            if (tab2048[i][j] != null && lab2048[i][j - 1].getText() == "") {
+	            	System.out.println("Posicion: " + i + " " + j );
+	                lab2048[i][j - 1].setText(lab2048[i][j].getText());
+	                lab2048[i][j].setText("");
+	            }
+	        }
+	    }
+	}
+	private void movimientoDerecha() {
+	    for (int i = 0; i < tab2048.length; i++) {
+	        for (int j = tab2048[i].length - 2; j >= 0; j--) { // Ajustar la condición aquí
+	            if (tab2048[i][j] != null && lab2048[i][j + 1].getText() == "") {
+	                lab2048[i][j + 1].setText(lab2048[i][j].getText());
+	                lab2048[i][j].setText("");
+	            }
+	        }
+	    }
+	}
+	private void movimientoArriba() {
+	    for (int j = 0; j < tab2048[0].length; j++) {
+	        for (int i = 1; i < tab2048.length; i++) {
+	            if (tab2048[i][j] != null && lab2048[i - 1][j].getText() == "") {
+	                lab2048[i - 1][j].setText(lab2048[i][j].getText());
+	                lab2048[i][j].setText("");
+	            }
+	        }
+	    }
+	}
+	private void movimientoAbajo() {
+	    for (int j = 0; j < tab2048[0].length; j++) {
+	        for (int i = tab2048.length - 2; i >= 0; i--) {
+	            if (tab2048[i][j] != null && lab2048[i + 1][j].getText() == "") {
+	                lab2048[i + 1][j].setText(lab2048[i][j].getText());
+	                lab2048[i][j].setText("");
+	            }
+	        }
+	    }
+	}
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -110,25 +162,30 @@ public class visual {
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_LEFT:
                         System.out.println("Flecha izquierda presionada");
-                        Negocio.elegirPosRandom();
                         Negocio.moverIzquierda();
+                        movimientoIzquierda();
+                        Negocio.elegirPosRandom();
                         actualizarTablero();
                         break;
                     case KeyEvent.VK_RIGHT:
-                    	Negocio.elegirPosRandom();
                     	Negocio.moverDerecha();
+                        movimientoDerecha();
+
+                    	Negocio.elegirPosRandom();
 
                         actualizarTablero();
                         break;
                     case KeyEvent.VK_UP:
-                    	Negocio.elegirPosRandom();
                     	Negocio.moverArriba();
+                    	movimientoArriba();
+                    	Negocio.elegirPosRandom();
 
                         actualizarTablero();
                         break;
                     case KeyEvent.VK_DOWN:
-                    	Negocio.elegirPosRandom();
                     	Negocio.moverAbajo();
+                    	movimientoAbajo();
+                    	Negocio.elegirPosRandom();
 
                         actualizarTablero();
                         break;
