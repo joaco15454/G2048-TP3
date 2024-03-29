@@ -82,12 +82,9 @@ public class visual {
 	private void comprobarEstadoLabel(int i, int j) { //HORRIBLE pero ya estoy quemado, hay que mejorar esta funcion jej
 			//System.out.println(lab2048[i][j]);
 			if (Negocio.comprobarPosicion(i, j) && lab2048[i][j].getText() == "") {			
-				if (primerInicio  < 2 ) {
-					lab2048[i][j].setText("2"); 
-					primerInicio+=1;
-				}else {
-					lab2048[i][j].setText(Negocio.generarRandom());
-				}
+				
+				lab2048[i][j].setText(Negocio.devolverEnString(i,j));
+				
 				
 			} else if (!Negocio.comprobarPosicion(i, j)) {
 				lab2048[i][j].setText("");   //EL PROBLEMA ES QUE ESTA TOMANDO LA NUEVA POSICION QUE ES VACIA EN EL MAYOR DE LOS CASOS, HAY QUE PASARLE EL VALOR DEL LABEL ANTERIUOR
@@ -107,62 +104,7 @@ public class visual {
 		label.setBounds(40, 25, 80, 43);
 		panel.add(label);
 	}
-	private void movimientoIzquierda() {
-		 for (int i = 0; i < tab2048.length; i++) {
-		     for (int j = 1; j < tab2048[i].length; j++) { // // Ajustar la condición aquí
-	            if (tab2048[i][j] != null && lab2048[i][j - 1].getText() == "") {
-	                lab2048[i][j - 1].setText(lab2048[i][j].getText());
-	                lab2048[i][j].setText("");
-	            } else if(tab2048[i][j] != null && Negocio.sonIguales(lab2048[i][j - 1].getText(), lab2048[i][j].getText())) {
-	            	lab2048[i][j - 1].setText(Negocio.sumaTablero(lab2048[i][j].getText()));
-	            	lab2048[i][j].setText("");
-	            	Negocio.actualizarPosicion(i,j);
-	            }
-	        }
-	    }
-	} 
-	private void movimientoDerecha() {
-	    for (int i = 0; i < tab2048.length; i++) {
-	        for (int j = tab2048[i].length - 2; j >= 0; j--) { // Ajustar la condición aquí
-	            if (tab2048[i][j] != null && lab2048[i][j + 1].getText() == "") {
-	                lab2048[i][j + 1].setText(lab2048[i][j].getText());
-	                lab2048[i][j].setText("");
-	            } else if(tab2048[i][j] != null && Negocio.sonIguales(lab2048[i][j + 1].getText(), lab2048[i][j].getText())) {
-	            	lab2048[i][j + 1].setText(Negocio.sumaTablero(lab2048[i][j].getText()));
-	                lab2048[i][j].setText("");
-	                Negocio.actualizarPosicion(i,j);
-	            }
-	        }
-	    }
-	}
-	private void movimientoArriba() {
-	    for (int j = 0; j < tab2048[0].length; j++) {
-	        for (int i = 1; i < tab2048.length; i++) {
-	            if (tab2048[i][j] != null && lab2048[i - 1][j].getText() == "") {
-	                lab2048[i - 1][j].setText(lab2048[i][j].getText());
-	                lab2048[i][j].setText("");
-	            }else if(tab2048[i][j] != null && Negocio.sonIguales(lab2048[i- 1][j].getText(), lab2048[i][j].getText())) {
-	            	lab2048[i - 1][j].setText(Negocio.sumaTablero(lab2048[i][j].getText()));
-	                lab2048[i][j].setText("");
-	                Negocio.actualizarPosicion(i,j);
-	            }
-	        }
-	    }
-	}
-	private void movimientoAbajo() {
-	    for (int j = 0; j < tab2048[0].length; j++) {
-	        for (int i = tab2048.length - 2; i >= 0; i--) {
-	            if (tab2048[i][j] != null && lab2048[i + 1][j].getText() == "") {
-	                lab2048[i + 1][j].setText(lab2048[i][j].getText());
-	                lab2048[i][j].setText("");
-	            } else if(tab2048[i][j] != null && Negocio.sonIguales(lab2048[i+ 1][j].getText(), lab2048[i][j].getText())) {
-	            	lab2048[i + 1][j].setText(Negocio.sumaTablero(lab2048[i][j].getText()));
-	                lab2048[i][j].setText("");
-	                Negocio.actualizarPosicion(i,j);
-	            }
-	        }
-	    }
-	}
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -178,13 +120,11 @@ public class visual {
                     case KeyEvent.VK_LEFT:
                         System.out.println("Flecha izquierda presionada");
                         Negocio.moverIzquierda();
-                        movimientoIzquierda();
                         Negocio.elegirPosRandom();
                         actualizarTablero();
                         break;
                     case KeyEvent.VK_RIGHT:
                     	Negocio.moverDerecha();
-                        movimientoDerecha();
 
                     	Negocio.elegirPosRandom();
 
@@ -192,14 +132,12 @@ public class visual {
                         break;
                     case KeyEvent.VK_UP:
                     	Negocio.moverArriba();
-                    	movimientoArriba();
                     	Negocio.elegirPosRandom();
 
                         actualizarTablero();
                         break;
                     case KeyEvent.VK_DOWN:
                     	Negocio.moverAbajo();
-                    	movimientoAbajo();
                     	Negocio.elegirPosRandom();
 
                         actualizarTablero();
