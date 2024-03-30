@@ -81,12 +81,10 @@ public class visual {
 	}
 	private void comprobarEstadoLabel(int i, int j) { //HORRIBLE pero ya estoy quemado, hay que mejorar esta funcion jej
 			//System.out.println(lab2048[i][j]);
-			if (Negocio.comprobarPosicion(i, j) && lab2048[i][j].getText() == "") {			
+			if (Negocio.comprobarPosicion(i, j)) {			
 				
-				lab2048[i][j].setText(Negocio.devolverEnString(i,j));
-				
-				
-			} else if (!Negocio.comprobarPosicion(i, j)) {
+				lab2048[i][j].setText(Negocio.devolverEnString(i,j));								
+			} else  {
 				lab2048[i][j].setText("");   //EL PROBLEMA ES QUE ESTA TOMANDO LA NUEVA POSICION QUE ES VACIA EN EL MAYOR DE LOS CASOS, HAY QUE PASARLE EL VALOR DEL LABEL ANTERIUOR
 		
 			}		
