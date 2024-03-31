@@ -21,15 +21,18 @@ public class Negocio {
 	}
 	
 	public static void elegirPosRandom() {
-		boolean posLibre = false;
-		while (!posLibre) {
-			int numero1 = (int) (Math.random() * 4);
-			int numero2 = (int) (Math.random() * 4);
+		if (comprobarSiHayPosVacias()) {
+			boolean posLibre = false;
+			while (!posLibre) {
+				int numero1 = (int) (Math.random() * 4);
+				int numero2 = (int) (Math.random() * 4);
 
-			if (tablero[numero1][numero2] == 0) {
-				tablero[numero1][numero2] = generarRandom();
-				posLibre=true;
+				if (tablero[numero1][numero2] == 0) {
+					tablero[numero1][numero2] = generarRandom();
+					posLibre=true;
+				}
 			}
+			
 		}
 		
 	}
@@ -165,6 +168,41 @@ public class Negocio {
 		numRandon =(int) (Math.random() * 100);
 		return numRandon % 2 == 0 ? 2 : 4;
 					
+	}
+	private static boolean comprobarSiHayPosVacias() {
+		for (int i = 0; i < tablero.length; i++) {
+	        for (int j = 0; j < tablero[i].length; j++) {
+	            // Verificamos si la celda actual está vacía
+	            if (tablero[i][j] == 0) {
+	                return true; // Todavía hay espacio vacío, el jugador no ha perdido
+	            }
+	        }
+	        }
+		return false;
+		}
+	public static boolean haPerdido() {
+		if (!comprobarSiHayPosVacias()) {
+			for (int i = 0; i < tablero.length; i++) {
+		        for (int j = 0; j < tablero[i].length; j++) {
+		        	if (comprobarSiHayMovimientos(i,j)) 
+		        	{
+		                return false; // Se encontró al menos una combinación válida, el jugador no ha perdido
+		            }
+		        }
+		    }
+		    return true; // No se encontraron movimientos válidos, el jugador ha perdido
+		}
+		return false;
+	    
+	}
+	private static boolean comprobarSiHayMovimientos(int i, int j) {
+		if ((i > 0 && tablero[i][j] == tablero[i - 1][j]) ||
+                (i < tablero.length - 1 && tablero[i][j] == tablero[i + 1][j]) ||
+                (j > 0 && tablero[i][j] == tablero[i][j - 1]) ||
+                (j < tablero[i].length - 1 && tablero[i][j] == tablero[i][j + 1])) {
+			return true;
+		}
+		return false;
 	}
 
 	
