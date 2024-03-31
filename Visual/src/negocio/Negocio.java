@@ -139,6 +139,9 @@ public class Negocio {
 	public static String devolverEnString(int i, int j) {
 		return "" + tablero[i][j];
 	}
+	public static String devolverPuntuacionString() {
+		return "" + puntuacion;
+	}
 	public static void actualizarPosicion(int i, int j) {
 		tablero[i][j] = 0;
 	}

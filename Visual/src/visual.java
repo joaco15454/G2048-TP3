@@ -1,5 +1,7 @@
 import java.awt.EventQueue;
 import negocio.Negocio;
+
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
@@ -9,17 +11,28 @@ import java.awt.Point;
 import javax.swing.JLabel;
 import java.awt.Color;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
+
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
 import java.util.Set;
+import javax.swing.JTextArea;
+import javax.swing.JToolBar;
+import javax.swing.JInternalFrame;
+import java.awt.FlowLayout;
 public class visual {
 
 	private JFrame frame;
+	private static JPanel encabezado = new JPanel();
+	private static JPanel body = new JPanel();
 	private static JPanel[][] tab2048 = new JPanel[4][4];
 	private static JLabel[][] lab2048 = new JLabel[4][4];
 	private static int primerInicio = 0; //variable para los primeros dos
+	private final JLabel txt_puntuacion = new JLabel("PUNTUACION: ");
+	private final JLabel var_puntuacion = new JLabel("0");
+
 
 
 	/**
@@ -51,9 +64,19 @@ public class visual {
 		frame.setTitle("2048");
 		frame.setBounds(100, 100, 499, 356);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new GridLayout(4, 4, 0, 0));
-        
+		frame.getContentPane().setLayout(new BorderLayout(0, 0));
+		//*frame.getContentPane().setLayout(new GridLayout(4, 4, 0, 0));		
+		frame.getContentPane().add(encabezado,BorderLayout.NORTH);
+		
+		frame.getContentPane().add(body);
+		frame.setSize(800, 600);
+		body.setLayout(new GridLayout(4, 4, 0, 0));
+		body.setBackground(new Color(235,206,188));
+		encabezado.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		encabezado.setBackground(new Color(235,206,188));
 
+				
+        
 	}
 	
 	private void cargarTablero() {
@@ -74,7 +97,8 @@ public class visual {
 	      
 	        	//System.out.println(("Es una posicion nueva? : " + Negocio.esNuevo(i, j)));
 	        	//System.out.println("El tablero como lo esta tomando? : " + Negocio.comprobarPosicion(i, j));
-		        comprobarEstadoLabel(i, j);	           
+		        comprobarEstadoLabel(i, j);
+		        actualizarPuntuacion();
 	        	
 	        }
 		}
@@ -90,9 +114,10 @@ public class visual {
 			}		
 	}
 	private void definirPanel(JPanel panel) {
-			panel.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 0, 255), new Color(0, 0, 255), new Color(0, 0, 255), new Color(0, 0, 255)));
-			panel.setBackground(new Color(255, 128, 192));
-			frame.getContentPane().add(panel);
+			Border lineBorder = BorderFactory.createLineBorder(new Color(235,206,188), 2);
+			panel.setBorder(lineBorder);
+			panel.setBackground(new Color(235, 160, 110));
+			body.add(panel);
 			panel.setLayout(null);
 	}
 	
@@ -102,13 +127,26 @@ public class visual {
 		label.setBounds(40, 25, 80, 43);
 		panel.add(label);
 	}
-	
+	private void estructurarHeader() {
+			txt_puntuacion.setFont(new Font("Tahoma", Font.PLAIN, 24));
+			
+			encabezado.add(txt_puntuacion);
+			var_puntuacion.setFont(new Font("Tahoma", Font.PLAIN, 24));
+			
+			encabezado.add(var_puntuacion);
+	}
+	private void actualizarPuntuacion() {
+		var_puntuacion.setText(Negocio.devolverPuntuacionString());
+	}
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
 		iniciarTablero();
 		cargarTablero();
+		estructurarHeader();
+		
 		
 		frame.addKeyListener(new KeyListener() {
             @Override
