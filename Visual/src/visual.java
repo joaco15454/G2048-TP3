@@ -32,7 +32,7 @@ public class visual {
 	private static int primerInicio = 0; //variable para los primeros dos
 	private final JLabel txt_puntuacion = new JLabel("PUNTUACION: ");
 	private final JLabel var_puntuacion = new JLabel("0");
-
+	private static boolean perdio = false;
 
 
 	/**
@@ -138,6 +138,13 @@ public class visual {
 	private void actualizarPuntuacion() {
 		var_puntuacion.setText(Negocio.devolverPuntuacionString());
 	}
+	public void cambiarVisible() {
+		frame.setVisible(true);
+	}
+	private void comprobarPerdio() {
+		 if (Negocio.haPerdido())
+			 frame.setVisible(false);
+	}
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -150,6 +157,7 @@ public class visual {
 		
 		frame.addKeyListener(new KeyListener() {
             @Override
+            
             public void keyPressed(KeyEvent e) {
                 // Manejar la tecla presionada
                 switch (e.getKeyCode()) {
@@ -157,25 +165,26 @@ public class visual {
                         System.out.println("Flecha izquierda presionada");
                         Negocio.moverIzquierda();
                         Negocio.elegirPosRandom();
+                        comprobarPerdio();
                         actualizarTablero();
                         break;
                     case KeyEvent.VK_RIGHT:
                     	Negocio.moverDerecha();
 
                     	Negocio.elegirPosRandom();
-
+                        comprobarPerdio();
                         actualizarTablero();
                         break;
                     case KeyEvent.VK_UP:
                     	Negocio.moverArriba();
                     	Negocio.elegirPosRandom();
-
+                        comprobarPerdio();
                         actualizarTablero();
                         break;
                     case KeyEvent.VK_DOWN:
                     	Negocio.moverAbajo();
                     	Negocio.elegirPosRandom();
-
+                        comprobarPerdio();
                         actualizarTablero();
                         break;
                     default:
