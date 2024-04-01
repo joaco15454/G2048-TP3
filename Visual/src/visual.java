@@ -14,6 +14,8 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
@@ -22,6 +24,7 @@ import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.JInternalFrame;
 import java.awt.FlowLayout;
+import javax.swing.JButton;
 public class visual {
 
 	private JFrame frame;
@@ -29,12 +32,10 @@ public class visual {
 	private static JPanel body = new JPanel();
 	private static JPanel[][] tab2048 = new JPanel[4][4];
 	private static JLabel[][] lab2048 = new JLabel[4][4];
-	private static int primerInicio = 0; //variable para los primeros dos
-	private final JLabel txt_puntuacion = new JLabel("PUNTUACION: ");
-	private final JLabel var_puntuacion = new JLabel("0");
+	private final JLabel txt_puntuacion = new JLabel("PUNTUACION: 0");
 	private static boolean perdio = false;
-
 	private Color colorFondo = new Color(93, 93, 95);
+	private final JButton btnNewButton = new JButton("VOLVER");
 
 	/**
 	 * Launch the application.
@@ -71,9 +72,10 @@ public class visual {
 		
 		frame.getContentPane().add(body);
 		frame.setSize(800, 600);
+		frame.setResizable(false);
+
 		body.setLayout(new GridLayout(4, 4, 0, 0));
 		body.setBackground(new Color(235,206,188));
-		encabezado.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		encabezado.setBackground(new Color(235,206,188));
 
 				
@@ -124,8 +126,9 @@ public class visual {
 	
 	private void definirLabel(JLabel label, JPanel panel) {
 		
-		label.setFont(new Font("Tahoma", Font.PLAIN, 35));
-		label.setBounds(40, 25, 80, 43);
+		label.setFont(new Font("Tahoma", Font.PLAIN, 55));
+		label.setBounds((panel.getWidth()+163) / 2, (panel.getHeight() + 87) / 2, 80, 43);
+
 		panel.add(label);
 	}
 	
@@ -167,7 +170,6 @@ public class visual {
 	            case 2048:
 	                tab2048[i][j].setBackground(new Color(59, 41, 86));
 	                break;
-	            // Agrega más casos según los valores necesarios
 	            default:
 	                tab2048[i][j].setBackground(colorFondo);
 	                break;
@@ -181,15 +183,23 @@ public class visual {
 
 	
 	private void estructurarHeader() {
-			txt_puntuacion.setFont(new Font("Tahoma", Font.PLAIN, 24));
-			
+			FlowLayout fl_encabezado = new FlowLayout(FlowLayout.LEFT, 100, 10);
+			encabezado.setLayout(fl_encabezado);
+			encabezado.add(btnNewButton);
+			btnNewButton.setFocusable(false);
+			btnNewButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					// Cuando se hace clic en el botón "JUGAR", se instancia y muestra la clase Visual
+					frame.setVisible(false);
+				}
+			});
+
+			txt_puntuacion.setFont(new Font("Tahoma", Font.PLAIN, 24));		
 			encabezado.add(txt_puntuacion);
-			var_puntuacion.setFont(new Font("Tahoma", Font.PLAIN, 24));
-			
-			encabezado.add(var_puntuacion);
+
 	}
 	private void actualizarPuntuacion() {
-		var_puntuacion.setText(Negocio.devolverPuntuacionString());
+		txt_puntuacion.setText("PUNTUACION: " + Negocio.devolverPuntuacionString());
 	}
 	public void cambiarVisible() {
 		frame.setVisible(true);
@@ -198,24 +208,32 @@ public class visual {
 		 if (Negocio.haPerdido())
 			 frame.setVisible(false);
 	}
+	public void reiniciar() {
+	    // Restablecer el tablero y la puntuación
+	    Negocio.inciarTablero();
+	    Negocio.reiniciarPuntuacion();
+	    // Actualizar el tablero y la puntuación en la interfaz gráfica
+	    actualizarTablero();
+	    actualizarPuntuacion();
+	    // Mostrar nuevamente el frame del juego
+	    frame.setVisible(true);
+	}
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
-		
+	private void initialize() {	
+		estructurarHeader();
 		iniciarTablero();
 		cargarTablero();
-		estructurarHeader();
 		
-		
+    	System.out.println("Entre aca");
 		frame.addKeyListener(new KeyListener() {
             @Override
-            
             public void keyPressed(KeyEvent e) {
                 // Manejar la tecla presionada
+            	System.out.println("HOLAA");
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_LEFT:
-                        System.out.println("Flecha izquierda presionada");
                         Negocio.moverIzquierda();
                         Negocio.elegirPosRandom();
                         comprobarPerdio();

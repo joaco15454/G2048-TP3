@@ -11,8 +11,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import java.awt.GridLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import javax.swing.BoxLayout;
 
 public class menu {
+	private visual visualInstance;
 
 	private JFrame frame;
 
@@ -46,31 +52,54 @@ public class menu {
 	private void initialize() {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(210, 120, 66));
+		
+		JButton btnNewButton = new JButton("JUGAR");
+		btnNewButton.setBounds(304, 201, 175, 61);
+		btnNewButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	if (visualInstance == null) {
+                    visualInstance = new visual();
+                } else {
+                    visualInstance.reiniciar();
+                }
+                // Muestra el visual
+                visualInstance.cambiarVisible();
+            }
+            
+        });
 		frame.getContentPane().setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("2048");
-		lblNewLabel.setBounds(179, 37, 100, 34);
+		lblNewLabel.setBounds(352, 93, 60, 34);
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 28));
 		frame.getContentPane().add(lblNewLabel);
-		
-		JButton btnNewButton = new JButton("JUGAR");
-		btnNewButton.setBounds(104, 100, 222, 23);
-		btnNewButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Cuando se hace clic en el botón "JUGAR", se instancia y muestra la clase Visual
-                visual visual = new visual();
-                visual.cambiarVisible();
-            }
-        });
 		frame.getContentPane().add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("PUNTUACIONES HISTORICAS");
+		btnNewButton_1.setBounds(304, 318, 175, 61);
 		btnNewButton_1.setBackground(new Color(128, 64, 0));
-		btnNewButton_1.setBounds(104, 159, 222, 23);
+		btnNewButton_1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Cuando se hace clic en el botón "JUGAR", se instancia y muestra la clase Visual
+                puntajes puntaje = new puntajes();
+                puntaje.cambiarVisibilidad();
+            }
+        });
 		frame.getContentPane().add(btnNewButton_1);
+		
+		JButton btnNewButton_2 = new JButton("SALIR");
+		btnNewButton_2.setBounds(304, 441, 175, 55);
+		btnNewButton_2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+              System.exit(0);
+            }
+        });
+		frame.getContentPane().add(btnNewButton_2);
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		frame.setSize(800, 600);
+		frame.setResizable(false);
+
 		
 	}
         
