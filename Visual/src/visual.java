@@ -34,6 +34,7 @@ public class visual {
 	private final JLabel var_puntuacion = new JLabel("0");
 	private static boolean perdio = false;
 
+	private Color colorFondo = new Color(93, 93, 95);
 
 	/**
 	 * Launch the application.
@@ -103,16 +104,16 @@ public class visual {
 	        }
 		}
 	}
-	private void comprobarEstadoLabel(int i, int j) { //HORRIBLE pero ya estoy quemado, hay que mejorar esta funcion jej
-			//System.out.println(lab2048[i][j]);
-			if (Negocio.comprobarPosicion(i, j)) {			
-				
-				lab2048[i][j].setText(Negocio.devolverEnString(i,j));								
-			} else  {
-				lab2048[i][j].setText("");   //EL PROBLEMA ES QUE ESTA TOMANDO LA NUEVA POSICION QUE ES VACIA EN EL MAYOR DE LOS CASOS, HAY QUE PASARLE EL VALOR DEL LABEL ANTERIUOR
-		
-			}		
-	}
+//	private void comprobarEstadoLabel(int i, int j) { //HORRIBLE pero ya estoy quemado, hay que mejorar esta funcion jej
+//			//System.out.println(lab2048[i][j]);
+//			if (Negocio.comprobarPosicion(i, j)) {			
+//				
+//				lab2048[i][j].setText(Negocio.devolverEnString(i,j));								
+//			} else  {
+//				lab2048[i][j].setText("");   //EL PROBLEMA ES QUE ESTA TOMANDO LA NUEVA POSICION QUE ES VACIA EN EL MAYOR DE LOS CASOS, HAY QUE PASARLE EL VALOR DEL LABEL ANTERIUOR
+//		
+//			}		
+//	}
 	private void definirPanel(JPanel panel) {
 			Border lineBorder = BorderFactory.createLineBorder(new Color(235,206,188), 2);
 			panel.setBorder(lineBorder);
@@ -127,6 +128,58 @@ public class visual {
 		label.setBounds(40, 25, 80, 43);
 		panel.add(label);
 	}
+	
+	private void comprobarEstadoLabel(int i, int j) {
+	    if (Negocio.comprobarPosicion(i, j)) {
+	        int valor = Integer.parseInt(Negocio.devolverEnString(i, j));
+	        lab2048[i][j].setText(Negocio.devolverEnString(i, j));
+	        switch (valor) {
+	            case 2:
+	                tab2048[i][j].setBackground(new Color(91, 154, 160));
+	                break;
+	            case 4:
+	                tab2048[i][j].setBackground(new Color(91, 160, 129));
+	                break;
+	            case 8:
+	                tab2048[i][j].setBackground(new Color(91, 160, 108));
+	                break;
+	            case 16:
+	                tab2048[i][j].setBackground(new Color(141, 91, 160));
+	                break;
+	            case 32:
+	                tab2048[i][j].setBackground(new Color(98, 37, 54));
+	                break;
+	            case 64:
+	                tab2048[i][j].setBackground(new Color(54, 37, 98));
+	                break;
+	            case 128:
+	                tab2048[i][j].setBackground(new Color(144, 114, 66));
+	                break;
+	            case 256:
+	                tab2048[i][j].setBackground(new Color(144, 95, 66));
+	                break;
+	            case 512:
+	                tab2048[i][j].setBackground(new Color(120, 33, 21));
+	                break;
+	            case 1024:
+	                tab2048[i][j].setBackground(new Color(75, 86, 41));
+	                break;
+	            case 2048:
+	                tab2048[i][j].setBackground(new Color(59, 41, 86));
+	                break;
+	            // Agrega más casos según los valores necesarios
+	            default:
+	                tab2048[i][j].setBackground(colorFondo);
+	                break;
+	        }
+	    } else {
+	        lab2048[i][j].setText("");
+	        tab2048[i][j].setBackground(colorFondo);
+	    }
+	}
+
+
+	
 	private void estructurarHeader() {
 			txt_puntuacion.setFont(new Font("Tahoma", Font.PLAIN, 24));
 			
