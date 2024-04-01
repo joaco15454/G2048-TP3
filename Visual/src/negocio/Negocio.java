@@ -1,14 +1,29 @@
 package negocio;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Point;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
+
+import javax.swing.JLabel;
 
 public class Negocio {
+    private static final String NOMBRE_ARCHIVO = "puntuaciones.dat";
 	private static int puntuacion = 0;
 	private static int[][] tablero;
 	private static int numRandon;
 	private static Set<Point> posicionesAsignadas = new HashSet<>(); //POR AHORA BORRABLE, lo dejo por las dudas
+	private static TreeSet<Integer> puntuacionesHistoricas = new TreeSet<>(Collections.reverseOrder());
+
 
 	public static void inciarTablero() {
 		tablero = new int[4][4]; 
@@ -149,7 +164,15 @@ public class Negocio {
 		tablero[i][j] = 0;
 	}
 	public static void actualizarPuntuacion(int sumatoria) {
+		comprobarSiGano(sumatoria);
 		puntuacion += sumatoria;
+	}
+	private static Boolean comprobarSiGano(int numero) {
+		if (numero >=2048) {
+			agregarPuntuacionHistorica(puntuacion);
+			return true;
+		}	
+		return false;
 	}
 	public static String sumaTablero(String i) {
 		int numeroInt = Integer.parseInt(i);
@@ -166,7 +189,7 @@ public class Negocio {
 	
 	public  static int generarRandom() {
 		numRandon =(int) (Math.random() * 100);
-		return numRandon % 2 == 0 ? 2 : 4;
+		return numRandon < 70 ? 2 : 4;
 					
 	}
 	private static boolean comprobarSiHayPosVacias() {
@@ -190,6 +213,7 @@ public class Negocio {
 		            }
 		        }
 		    }
+			agregarPuntuacionHistorica(puntuacion);
 		    return true; // No se encontraron movimientos válidos, el jugador ha perdido
 		}
 		return false;
@@ -205,5 +229,40 @@ public class Negocio {
 		return false;
 	}
 
+	private static void agregarPuntuacionHistorica(int puntaje) {	
+		cargarPuntuaciones();
+		puntuacionesHistoricas.add(puntaje);
+		guardarPuntuaciones();
+		  	}
+	private static void guardarPuntuaciones() {
+		for (Integer num : puntuacionesHistoricas) {
+			System.out.println(num);
+		}
+		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(NOMBRE_ARCHIVO))) {
+            out.writeObject(puntuacionesHistoricas);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+	}
+	private static void cargarPuntuaciones() {
+		File archivo = new File(NOMBRE_ARCHIVO);
+        if (archivo.exists()) {
+            try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(NOMBRE_ARCHIVO))) {
+                puntuacionesHistoricas = (TreeSet<Integer>) in.readObject();
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+	}
+	public static void reiniciarPuntuacion() {
+		puntuacion = 0;
+	}
+	public static TreeSet<Integer> devolverPuntajes() {
+		
+		cargarPuntuaciones();
+		return puntuacionesHistoricas;
+		
+	}
 	
 }
