@@ -9,6 +9,8 @@ import java.awt.GridLayout;
 import java.awt.Point;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Color;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
@@ -25,6 +27,9 @@ import javax.swing.JToolBar;
 import javax.swing.JInternalFrame;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
+import javax.swing.ImageIcon;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 public class visual {
 
 	private JFrame frame;
@@ -34,8 +39,10 @@ public class visual {
 	private static JLabel[][] lab2048 = new JLabel[4][4];
 	private final JLabel txt_puntuacion = new JLabel("PUNTUACION: 0");
 	private static boolean perdio = false;
-	private Color colorFondo = new Color(93, 93, 95);
-	private final JButton btnNewButton = new JButton("VOLVER");
+	
+	
+	private final JLabel lblNewLabel = new JLabel("New label");
+	private final JLabel lblNewLabel_1 = new JLabel("New label");
 
 	/**
 	 * Launch the application.
@@ -46,6 +53,7 @@ public class visual {
 				try {
 					visual window = new visual();
 					window.frame.setVisible(true);
+					window.frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -63,20 +71,30 @@ public class visual {
 	private void iniciarTablero() {
 		Negocio.inciarTablero();
 		frame = new JFrame();
+		frame.getContentPane().setBackground(Color.BLACK);
 		frame.setTitle("2048");
 		frame.setBounds(100, 100, 499, 356);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new BorderLayout(0, 0));
+		frame.getContentPane().setLayout(null);
+		encabezado.setBounds(-10, 0, 786, 120);
 		//*frame.getContentPane().setLayout(new GridLayout(4, 4, 0, 0));		
-		frame.getContentPane().add(encabezado,BorderLayout.NORTH);
+		frame.getContentPane().add(encabezado);
+		body.setBounds(191, 162, 345, 344);
 		
 		frame.getContentPane().add(body);
-		frame.setSize(800, 600);
+		frame.setSize(782, 698);
 		frame.setResizable(false);
 
 		body.setLayout(new GridLayout(4, 4, 0, 0));
-		body.setBackground(new Color(235,206,188));
-		encabezado.setBackground(new Color(235,206,188));
+		body.setBackground(Color.BLACK);
+		encabezado.setBackground(Color.BLACK);
+		lblNewLabel.setIcon(new ImageIcon(visual.class.getResource("/imagenes/fondo grande.png")));
+		lblNewLabel.setBounds(-10, 113, 776, 553);
+		
+		frame.getContentPane().add(lblNewLabel);
+		
+		
+		
 
 				
         
@@ -86,7 +104,10 @@ public class visual {
 		for (int i = 0; i < 4; i++) {
 	        for (int j = 0; j < 4; j++) {	        
 	           tab2048[i][j] = new JPanel();
-	           definirPanel(tab2048[i][j]);	
+	           Border lineBorder = BorderFactory.createLineBorder(Color.WHITE);
+	           tab2048[i][j].setBorder(lineBorder);
+	           body.add(tab2048[i][j]);
+	           tab2048[i][j].setLayout(null);
 				lab2048[i][j] = new JLabel(""); 
 	           comprobarEstadoLabel(i, j);	           
 	           definirLabel(lab2048[i][j],tab2048[i][j]);	           
@@ -106,28 +127,15 @@ public class visual {
 	        }
 		}
 	}
-//	private void comprobarEstadoLabel(int i, int j) { //HORRIBLE pero ya estoy quemado, hay que mejorar esta funcion jej
-//			//System.out.println(lab2048[i][j]);
-//			if (Negocio.comprobarPosicion(i, j)) {			
-//				
-//				lab2048[i][j].setText(Negocio.devolverEnString(i,j));								
-//			} else  {
-//				lab2048[i][j].setText("");   //EL PROBLEMA ES QUE ESTA TOMANDO LA NUEVA POSICION QUE ES VACIA EN EL MAYOR DE LOS CASOS, HAY QUE PASARLE EL VALOR DEL LABEL ANTERIUOR
-//		
-//			}		
-//	}
-	private void definirPanel(JPanel panel) {
-			Border lineBorder = BorderFactory.createLineBorder(new Color(235,206,188), 2);
-			panel.setBorder(lineBorder);
-			panel.setBackground(new Color(235, 160, 110));
-			body.add(panel);
-			panel.setLayout(null);
-	}
+
+
 	
 	private void definirLabel(JLabel label, JPanel panel) {
 		
-		label.setFont(new Font("Tahoma", Font.PLAIN, 55));
-		label.setBounds((panel.getWidth()+163) / 2, (panel.getHeight() + 87) / 2, 80, 43);
+		label.setFont(new Font("Pixeled", Font.PLAIN, 20));
+		label.setForeground(Color.white);
+		label.setBounds((panel.getWidth()+80) / 2, (panel.getHeight()+50 ) / 2, 80, 43);
+		
 
 		panel.add(label);
 	}
@@ -171,31 +179,41 @@ public class visual {
 	                tab2048[i][j].setBackground(new Color(59, 41, 86));
 	                break;
 	            default:
-	                tab2048[i][j].setBackground(colorFondo);
+	                tab2048[i][j].setBackground(Color.black);
 	                break;
 	        }
 	    } else {
 	        lab2048[i][j].setText("");
-	        tab2048[i][j].setBackground(colorFondo);
+	        tab2048[i][j].setBackground(Color.black);
 	    }
 	}
 
 
 	
 	private void estructurarHeader() {
-			FlowLayout fl_encabezado = new FlowLayout(FlowLayout.LEFT, 100, 10);
-			encabezado.setLayout(fl_encabezado);
-			encabezado.add(btnNewButton);
-			btnNewButton.setFocusable(false);
-			btnNewButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					// Cuando se hace clic en el botón "JUGAR", se instancia y muestra la clase Visual
-					frame.setVisible(false);
+			encabezado.setLayout(null);
+			
+			txt_puntuacion.setBounds(224, 10, 393, 68);
+			txt_puntuacion.setForeground(Color.WHITE);
+
+			txt_puntuacion.setFont(new Font("Pixeled", Font.PLAIN, 24));		
+			encabezado.add(txt_puntuacion);
+			lblNewLabel_1.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					
+			
+						// Cuando se hace clic en el botón "JUGAR", se instancia y muestra la clase Visual
+						frame.setVisible(false);
+						
+					
 				}
 			});
-
-			txt_puntuacion.setFont(new Font("Tahoma", Font.PLAIN, 24));		
-			encabezado.add(txt_puntuacion);
+			
+			lblNewLabel_1.setIcon(new ImageIcon(visual.class.getResource("/imagenes/volver.png")));
+			lblNewLabel_1.setBounds(0, 10, 146, 68);
+			
+			encabezado.add(lblNewLabel_1);
 
 	}
 	private void actualizarPuntuacion() {
@@ -205,8 +223,9 @@ public class visual {
 		frame.setVisible(true);
 	}
 	private void comprobarPerdio() {
-		 if (Negocio.haPerdido())
-			 frame.setVisible(false);
+		 if (Negocio.haPerdido()) {
+			 JOptionPane.showMessageDialog(null, "Perdiste");
+			 frame.setVisible(false);}
 	}
 	public void reiniciar() {
 	    // Restablecer el tablero y la puntuación

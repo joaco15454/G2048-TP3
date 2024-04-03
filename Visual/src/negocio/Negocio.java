@@ -64,6 +64,7 @@ public class Negocio {
 	            }
 	        }
 	    }
+	    elegirPosRandom();
 	}
 	private static void moverNumeroIzquierda(int[][] tablero, int fila, int columna) {
 	    int k = columna;
@@ -86,6 +87,7 @@ public class Negocio {
 	            }
 	        }
 	    }
+	    elegirPosRandom();
 	}
 
 	
@@ -112,6 +114,7 @@ public class Negocio {
 	            }
 	        }
 	    }
+	    elegirPosRandom();
 	}
 	private static void moverNumeroArriba(int[][] tablero, int fila, int columna) {
 	    int k = fila;
@@ -136,6 +139,7 @@ public class Negocio {
 	            }
 	        }
 	    }
+	    elegirPosRandom();
 	}
 
 	private static void moverNumeroAbajo(int[][] tablero, int fila, int columna) {
@@ -262,6 +266,11 @@ public class Negocio {
 		
 		cargarPuntuaciones();
 		return puntuacionesHistoricas;
+		
+	}
+	
+	public  static int damenum (int i, int j) {
+		return tablero[i][j];
 		
 	}
 	
