@@ -1,5 +1,6 @@
 import java.awt.EventQueue;
 
+
 import javax.swing.JFrame;
 import java.awt.Color;
 import javax.swing.JLabel;
@@ -16,11 +17,32 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import javax.swing.ImageIcon;
+import javax.swing.JTextField;
+import java.awt.Canvas;
+import java.awt.Label;
+import javax.swing.border.TitledBorder;
+import javax.swing.JSplitPane;
+import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
+
+import java.awt.CardLayout;
+import java.awt.Component;
+import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class menu {
 	private visual visualInstance;
 
 	private JFrame frame;
+
+	private JLabel jugar;
+
+	private JLabel salir;
+
+	private JLabel    punaje;
 
 	/**
 	 * Launch the application.
@@ -31,6 +53,7 @@ public class menu {
 				try {
 					menu window = new menu();
 					window.frame.setVisible(true);
+					window.frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -38,8 +61,85 @@ public class menu {
 		});
 		
 	}
+	
+	
+	
+	private void inicializarcomponentes () {
+		frame = new JFrame();
+		frame.getContentPane().setBackground(Color.BLACK);
+		frame.setForeground(new Color(240, 240, 240));
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\cncow\\eclipse-workspace\\Visual\\imagenes\\fondo.png"));
+		frame.setBounds(100, 100, 450, 300);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(639, 377);
+		frame.setResizable(false);
+		frame.getContentPane().setLayout(null);
+		
+		jugar = new JLabel("");
+		 
 
+    	frame.getContentPane().setLayout(null);
+		 
+		jugar.setIcon(new ImageIcon(menu.class.getResource("/imagenes/jugar1.png")));
+		jugar.setBounds(138, 40, 391, 149);
+		frame.getContentPane().add(jugar);
+		
+		salir = new JLabel("");
+		
+		salir.setIcon(new ImageIcon(menu.class.getResource("/imagenes/salir1.png")));
+		salir.setBounds(307, 195, 53, 51);
+		frame.getContentPane().add(salir);
+		
+	    punaje = new JLabel("");
+	    
+        frame.getContentPane().add(punaje);
+	    
+		punaje.setIcon(new ImageIcon(menu.class.getResource("/imagenes/puntaje1.png")));
+		punaje.setBounds(214, 180, 92, 66);
+		frame.getContentPane().add(punaje);
+		
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setIcon(new ImageIcon(menu.class.getResource("/imagenes/fondo1.png")));
+		lblNewLabel.setBounds(0, -267, 1332, 885);
+		frame.getContentPane().add(lblNewLabel);
+
+	    
+		
+	}
+
+	private void escucharBotones () {
+		jugar.addMouseListener(new MouseAdapter() {
+		 	@Override
+		 	public void mouseClicked(MouseEvent e) {
+		 		visual.main(null);
+		 		frame.dispose();
+		 	
+		 	 }
+		 });
+		 
+		salir.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				 System.exit(0);
+			}
+		});
+		
+	    punaje.addMouseListener(new MouseAdapter() {
+	    	@Override
+	    	public void mouseClicked(MouseEvent e) {
+	    		// Cuando se hace clic en el botón "JUGAR", se instancia y muestra la clase Visual
+               puntajes.main(null);
+               frame.dispose();
+            }
+        });
+		
+	}
+	
+		
+	
+	
 	/**
+	 * 
 	 * Create the application.
 	 */
 	public menu() {
@@ -50,57 +150,10 @@ public class menu {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.getContentPane().setBackground(new Color(210, 120, 66));
+		inicializarcomponentes ();
+		escucharBotones () ;
 		
-		JButton btnNewButton = new JButton("JUGAR");
-		btnNewButton.setBounds(304, 201, 175, 61);
-		btnNewButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	if (visualInstance == null) {
-                    visualInstance = new visual();
-                } else {
-                    visualInstance.reiniciar();
-                }
-                // Muestra el visual
-                visualInstance.cambiarVisible();
-            }
-            
-        });
-		frame.getContentPane().setLayout(null);
-		
-		JLabel lblNewLabel = new JLabel("2048");
-		lblNewLabel.setBounds(352, 93, 60, 34);
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 28));
-		frame.getContentPane().add(lblNewLabel);
-		frame.getContentPane().add(btnNewButton);
-		
-		JButton btnNewButton_1 = new JButton("PUNTUACIONES HISTORICAS");
-		btnNewButton_1.setBounds(304, 318, 175, 61);
-		btnNewButton_1.setBackground(new Color(128, 64, 0));
-		btnNewButton_1.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Cuando se hace clic en el botón "JUGAR", se instancia y muestra la clase Visual
-                puntajes puntaje = new puntajes();
-                puntaje.cambiarVisibilidad();
-            }
-        });
-		frame.getContentPane().add(btnNewButton_1);
-		
-		JButton btnNewButton_2 = new JButton("SALIR");
-		btnNewButton_2.setBounds(304, 441, 175, 55);
-		btnNewButton_2.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-              System.exit(0);
-            }
-        });
-		frame.getContentPane().add(btnNewButton_2);
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(800, 600);
-		frame.setResizable(false);
-
+	   
 		
 	}
-        
 }
