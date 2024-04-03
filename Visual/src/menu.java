@@ -34,15 +34,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class menu {
-	private visual visualInstance;
+	private static visual visualInstance  = new visual();
 
-	private JFrame frame;
+	protected static JFrame frame;
 
-	private JLabel jugar;
+	private static JLabel jugar;
 
-	private JLabel salir;
+	private static JLabel salir;
 
-	private JLabel    punaje;
+	private static JLabel    punaje;
 
 	/**
 	 * Launch the application.
@@ -64,7 +64,7 @@ public class menu {
 	
 	
 	
-	private void inicializarcomponentes () {
+	private static void inicializarcomponentes () {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.setForeground(new Color(240, 240, 240));
@@ -107,12 +107,13 @@ public class menu {
 		
 	}
 
-	private void escucharBotones () {
+	private static void escucharBotones () {
 		jugar.addMouseListener(new MouseAdapter() {
 		 	@Override
 		 	public void mouseClicked(MouseEvent e) {
-		 		visual.main(null);
-		 		frame.dispose();
+		 		visualInstance.reiniciar();
+		 		
+		 		frame.setVisible(false);
 		 	
 		 	 }
 		 });
@@ -149,7 +150,7 @@ public class menu {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	public static void initialize() {
 		inicializarcomponentes ();
 		escucharBotones () ;
 		

@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Menu;
 import java.awt.Point;
 
 import javax.swing.JLabel;
@@ -32,7 +33,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 public class visual {
 
-	private JFrame frame;
+	private static JFrame frame;
 	private static JPanel encabezado = new JPanel();
 	private static JPanel body = new JPanel();
 	private static JPanel[][] tab2048 = new JPanel[4][4];
@@ -41,7 +42,7 @@ public class visual {
 	private static boolean perdio = false;
 	
 	
-	private final JLabel lblNewLabel = new JLabel("New label");
+	private final static JLabel lblNewLabel = new JLabel("New label");
 	private final JLabel lblNewLabel_1 = new JLabel("New label");
 
 	/**
@@ -51,9 +52,8 @@ public class visual {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					visual window = new visual();
-					window.frame.setVisible(true);
-					window.frame.setLocationRelativeTo(null);
+					visual.frame.setVisible(true);
+					visual.frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -68,7 +68,7 @@ public class visual {
 		initialize();
 	}
 
-	private void iniciarTablero() {
+	public static void iniciarTablero() {
 		Negocio.inciarTablero();
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
@@ -132,9 +132,9 @@ public class visual {
 	
 	private void definirLabel(JLabel label, JPanel panel) {
 		
-		label.setFont(new Font("Pixeled", Font.PLAIN, 20));
+		label.setFont(new Font("Pixeled", Font.PLAIN, 35));
 		label.setForeground(Color.white);
-		label.setBounds((panel.getWidth()+80) / 2, (panel.getHeight()+50 ) / 2, 80, 43);
+		label.setBounds((panel.getWidth()+60) / 2, (panel.getHeight()+50 ) / 2, 80, 43);
 		
 
 		panel.add(label);
@@ -200,13 +200,15 @@ public class visual {
 			encabezado.add(txt_puntuacion);
 			lblNewLabel_1.addMouseListener(new MouseAdapter() {
 				@Override
-				public void mouseClicked(MouseEvent e) {
-					
-			
+				public void mouseClicked(MouseEvent e) {			
+						System.out.println("Le diste click aca");
 						// Cuando se hace clic en el botón "JUGAR", se instancia y muestra la clase Visual
+						reiniciar();
+						frame.dispose();
 						frame.setVisible(false);
 						
-					
+						
+						menu.frame.setVisible(true);
 				}
 			});
 			
@@ -250,30 +252,24 @@ public class visual {
             @Override
             public void keyPressed(KeyEvent e) {
                 // Manejar la tecla presionada
-            	System.out.println("HOLAA");
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_LEFT:
                         Negocio.moverIzquierda();
-                        Negocio.elegirPosRandom();
                         comprobarPerdio();
                         actualizarTablero();
                         break;
                     case KeyEvent.VK_RIGHT:
                     	Negocio.moverDerecha();
-
-                    	Negocio.elegirPosRandom();
                         comprobarPerdio();
                         actualizarTablero();
                         break;
                     case KeyEvent.VK_UP:
                     	Negocio.moverArriba();
-                    	Negocio.elegirPosRandom();
                         comprobarPerdio();
                         actualizarTablero();
                         break;
                     case KeyEvent.VK_DOWN:
                     	Negocio.moverAbajo();
-                    	Negocio.elegirPosRandom();
                         comprobarPerdio();
                         actualizarTablero();
                         break;

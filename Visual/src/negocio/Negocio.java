@@ -41,7 +41,6 @@ public class Negocio {
 			while (!posLibre) {
 				int numero1 = (int) (Math.random() * 4);
 				int numero2 = (int) (Math.random() * 4);
-
 				if (tablero[numero1][numero2] == 0) {
 					tablero[numero1][numero2] = generarRandom();
 					posLibre=true;
