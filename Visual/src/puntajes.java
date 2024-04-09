@@ -135,7 +135,7 @@ public class puntajes {
 	           cadena += "\n";
 	        }  
 	        
-	        res.setText("Puntajes historicos \r\n");
+	        res.setText(cadena);
 	    }	    
 
 	private void escucharBotonVolver() {
