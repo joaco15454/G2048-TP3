@@ -157,19 +157,58 @@ public class Negocio {
 	}
 	//****** FIN MOVIMIENTOS TABLERO ***********************    
 
-	public static String devolverEnString(int i, int j) {
-		return "" + tablero[i][j];
+	
+	//*PUNTUACIONES //*
+	
+	private static void agregarPuntuacionHistorica(int puntaje) {	
+		cargarPuntuaciones();
+		puntuacionesHistoricas.add(puntaje);
+		guardarPuntuaciones();
 	}
+	private static void guardarPuntuaciones() {
+		for (Integer num : puntuacionesHistoricas) {
+			System.out.println(num);
+		}
+		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(NOMBRE_ARCHIVO))) {
+			out.writeObject(puntuacionesHistoricas);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	private static void cargarPuntuaciones() {
+		File archivo = new File(NOMBRE_ARCHIVO);
+		if (archivo.exists()) {
+			try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(NOMBRE_ARCHIVO))) {
+				puntuacionesHistoricas = (TreeSet<Integer>) in.readObject();
+			} catch (IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	public static void reiniciarPuntuacion() {
+		puntuacion = 0;
+	}
+	public static TreeSet<Integer> devolverPuntajes() {
+		
+		cargarPuntuaciones();
+		return puntuacionesHistoricas;
+		
+	}
+	
 	public static String devolverPuntuacionString() {
 		return "" + puntuacion;
-	}
-	public static void actualizarPosicion(int i, int j) {
-		tablero[i][j] = 0;
 	}
 	public static void actualizarPuntuacion(int sumatoria) {
 		comprobarSiGano(sumatoria);
 		puntuacion += sumatoria;
 	}
+	
+	//*FIN PUNTUACIONES //*
+	
+	
+	//*DERROTA/VICTORIA
+	
 	private static Boolean comprobarSiGano(int numero) {
 		if (numero >=2048) {
 			agregarPuntuacionHistorica(puntuacion);
@@ -177,24 +216,7 @@ public class Negocio {
 		}	
 		return false;
 	}
-	public static String sumaTablero(String i) {
-		int numeroInt = Integer.parseInt(i);
-		System.out.println(numeroInt);
-		return "" + numeroInt * 2;
-	}
-	public static boolean sonIguales(String i, String j) {
-		return i.trim().equals(j.trim());
-	}
-	public static boolean esNuevo(int i, int j) {
-		return !posicionesAsignadas.contains(new Point(i,j));
-	}
 	
-	
-	public  static int generarRandom() {
-		numRandon =(int) (Math.random() * 100);
-		return numRandon < 70 ? 2 : 4;
-					
-	}
 	private static boolean comprobarSiHayPosVacias() {
 		for (int i = 0; i < tablero.length; i++) {
 	        for (int j = 0; j < tablero[i].length; j++) {
@@ -231,46 +253,42 @@ public class Negocio {
 		}
 		return false;
 	}
+	
+	//*FIN DERROTA/VICTORIA
+	
+	//*AUXILIARES //*
+	public static String devolverEnString(int i, int j) {
+		return "" + tablero[i][j];
+	}
+	
+	public static void actualizarPosicion(int i, int j) {
+		tablero[i][j] = 0;
+	}
+	
+	
+	public static String sumaTablero(String i) {
+		int numeroInt = Integer.parseInt(i);
+		System.out.println(numeroInt);
+		return "" + numeroInt * 2;
+	}
+	public static boolean sonIguales(String i, String j) {
+		return i.trim().equals(j.trim());
+	}
+	public static boolean esNuevo(int i, int j) {
+		return !posicionesAsignadas.contains(new Point(i,j));
+	}
+	
+	
+	public  static int generarRandom() {
+		numRandon =(int) (Math.random() * 100);
+		return numRandon < 70 ? 2 : 4;
+					
+	}
+	
 
-	private static void agregarPuntuacionHistorica(int puntaje) {	
-		cargarPuntuaciones();
-		puntuacionesHistoricas.add(puntaje);
-		guardarPuntuaciones();
-		  	}
-	private static void guardarPuntuaciones() {
-		for (Integer num : puntuacionesHistoricas) {
-			System.out.println(num);
-		}
-		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(NOMBRE_ARCHIVO))) {
-            out.writeObject(puntuacionesHistoricas);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-	}
-	private static void cargarPuntuaciones() {
-		File archivo = new File(NOMBRE_ARCHIVO);
-        if (archivo.exists()) {
-            try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(NOMBRE_ARCHIVO))) {
-                puntuacionesHistoricas = (TreeSet<Integer>) in.readObject();
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-	}
-	public static void reiniciarPuntuacion() {
-		puntuacion = 0;
-	}
-	public static TreeSet<Integer> devolverPuntajes() {
-		
-		cargarPuntuaciones();
-		return puntuacionesHistoricas;
-		
-	}
 	
 	public  static int damenum (int i, int j) {
 		return tablero[i][j];
 		
 	}
-	
 }
